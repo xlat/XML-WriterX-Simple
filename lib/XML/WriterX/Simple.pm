@@ -1,5 +1,6 @@
 package XML::WriterX::Simple;
 
+#ABSTRACT:Make XML production simpler.
 use 5.006;
 use strict;
 use warnings FATAL => 'all';
@@ -8,14 +9,7 @@ use warnings FATAL => 'all';
 
 XML::WriterX::Simple - Make XML production simpler.
 
-=head1 VERSION
-
-Version 0.01
-
 =cut
-
-our $VERSION = '0.02';
-
 
 =head1 SYNOPSIS
 

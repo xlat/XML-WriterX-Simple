@@ -1,5 +1,8 @@
-Revision history for XML-WriterX-Simple
+Revision history for {{$dist->name}}
 
+{{$NEXT}}
+
+0.151350  2015-05-15 12:19:09+02:00 Europe/Paris
 0.01    Date/time
         First version, released on an unsuspecting world.
 
