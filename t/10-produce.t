@@ -46,7 +46,7 @@ for my $test ( @tests ){
         like $xml, $test->[3], $test->[0];
     }
     else{
-        cmp_ok $xml, $test->[2], "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n$test->[3]", $test->[0];
+        cmp_ok $xml, $test->[2], "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n$test->[3]\n", $test->[0];
     }
 }
 

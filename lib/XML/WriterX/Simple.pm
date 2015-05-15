@@ -14,7 +14,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -117,7 +117,7 @@ Internal use, return argument(s) in a flattened format.
 =cut
 
 sub stringify{
-    my $_ = shift;
+    local $_ = shift;
     return $_ unless ref;
     if(ref eq 'ARRAY'){
     }
@@ -262,7 +262,7 @@ L<http://search.cpan.org/dist/XML-WriterX-Simple/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2014 Nicolas GEORGES.
+Copyright 2014, 2015 Nicolas GEORGES.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
