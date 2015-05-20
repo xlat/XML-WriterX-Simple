@@ -1,7 +1,7 @@
 package XML::WriterX::Simple;
 
 #ABSTRACT:Make XML production simpler.
-use 5.006;
+use 5.010;
 use strict;
 use warnings FATAL => 'all';
 
