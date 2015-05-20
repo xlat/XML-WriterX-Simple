@@ -1,7 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-
+        add perl 5.10 dependency
 0.151400  2015-05-20 17:23:14+02:00 Europe/Paris
         add tag sequence production
 0.151380  2015-05-18 08:04:42+02:00 Europe/Paris
