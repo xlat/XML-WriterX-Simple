@@ -13,7 +13,7 @@ XML::WriterX::Simple - Make XML production simpler.
 
 =head1 SYNOPSIS
 
-Make XML production simpler, just like XML::Simple with attributs, comments and processing instructions.
+Make XML production simpler, just like XML::Simple with attributes, comments and processing instructions.
 
     use XML::Writer;
     use XML::WriterX::Simple;
@@ -56,9 +56,10 @@ The $tagName can begin with :
 
     - a '#' to produce a comment
     - a '?' to produce a processing instruction
-    - a ':' to produce a attribut (when $tagContent is not an ARRAY/HASH)
+    - a ':' to produce a attribute (when $tagContent is not an ARRAY/HASH)
+    - a '.' when it is associated with a CODEREF, so it won't produce the tag itself.
 
-or to produce orderd attributs, use the following:
+or to produce orderd attributes, use the following:
 
     ':attr' => [ name => value, ... ]
 
@@ -82,26 +83,31 @@ When a tag content is :
 
 sub XML::Writer::produce{
     my $writer  = shift;
-    my $tagName = shift;
-    my ($attr, $children, $text) = XML::WriterX::Simple::arrange_args( $writer, shift );
-    if(($text//'') eq '' and !@$children){
-        $writer->emptyTag( $tagName, @$attr );
-    }
-    else{
-        if(ref($text) eq 'CODE'){
-            XML::WriterX::Simple::produce_content( $writer, $tagName => $text );
+    
+    TAG:
+    while( my $tagName = shift ){
+        my ($attr, $children, $text) = XML::WriterX::Simple::arrange_args( $writer, shift );
+        if(($text//'') eq '' and !@$children){
+            $writer->emptyTag( $tagName, @$attr );
         }
         else{
-            $writer->startTag( $tagName, @$attr );
-            $writer->characters( $text ) if defined $text;
-            while( @$children ){
-                my ($tag, $content) = (shift(@$children), shift(@$children));
-                $tag = ".$tagName" if $tag =~ /^[&"]$/ and ref $content eq 'CODE';
-                XML::WriterX::Simple::produce_content( $writer, $tag => $content );
+            if(ref($text) eq 'CODE'){
+                XML::WriterX::Simple::produce_content( $writer, $tagName => $text );
             }
-            $writer->endTag( $tagName );
+            else{
+                $writer->startTag( $tagName, @$attr );
+                $writer->characters( $text ) if defined $text;
+                while( @$children ){
+                    my ($tag, $content) = (shift(@$children), shift(@$children));
+                    $tag = ".$tagName" if $tag =~ /^[&"]$/ and ref $content eq 'CODE';
+                    XML::WriterX::Simple::produce_content( $writer, $tag => $content );
+                }
+                $writer->endTag( $tagName );
+            }
         }
     }
+    #return writer to allow chaining
+    $writer;
 }       
 
 =head2 stringify
@@ -149,13 +155,13 @@ sub arrange_args{
                 push @children, $tag => $content;
             }
             elsif($tag =~ /^:attr/ and ref($content) =~ /^(ARRAY|HASH)$/){
-                #multiple attributs in $content
+                #multiple attributes in $content
                 my @attrs = $1 eq 'ARRAY' ? @$content : %$content;
-                #!warning if %attr != @$content : Attribut name must be unique!
+                #!warning if %attr != @$content : attribute name must be unique!
                 push @attr, shift(@attrs), shift(@attrs) while @attrs;
             }
             elsif($tag =~ /^:(.*)/){
-                #single attribut named $1 value is stringify($content)
+                #single attribute named $1 value is stringify($content)
                 push @attr, $1 => $content;
             }
             else{
@@ -175,8 +181,8 @@ Internal use, will produce the tag content.
 
 #CANNOT:
 #   - produce a comment from a sub{}
-#   - produce a tag attributs from a sub{}
-#   - prodice attributs from a sub{} ?
+#   - produce a tag attributes from a sub{}
+#   - prodice attributes from a sub{} ?
 sub produce_content{
     my ($writer, $tag, $content) = @_;
 

@@ -30,6 +30,8 @@ my @tests = (
                                             '#foobar' => "comment after footer tag",
                                         ] 
                                 ], 'eq' => '<doc id="42" time="132400">foobar<dumy attr1="valattr1"><child1>valchild1</child1>text1</dumy><!-- comment after content tag --><footer name="bar" id="42">Text content<child1>val1</child1><child2>val2</child2></footer><!-- comment after footer tag --></doc>' ],
+    [ 'tag sequence' => [ doc => sub{ shift->produce(tag1 => 'test', tag2 => 'test2') } ], eq => '<doc><tag1>test</tag1><tag2>test2</tag2></doc>', ],
+    [ 'hidden doc tag' => [ '.doc' => sub{ shift->produce(tag1 => 'test') } ], eq => '<tag1>test</tag1>', ],
 );
 
 plan tests => 2 + @tests;
